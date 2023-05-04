@@ -3,7 +3,12 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useUserStore } from '../store/useUserStore';
 import { v4 as uuidv4 } from 'uuid';
+import {AiOutlineCloseCircle} from 'react-icons/ai';
 
+
+interface Props {
+  onCancel: () => void;
+}
 interface FormValues {
   id: number;
   name: string;
@@ -13,7 +18,7 @@ interface FormValues {
   zipcode: string;
 }
 
-const Form: React.FC = () => {
+const Form:React.FC<Props> = ({ onCancel }) => {
   const [values, setValues] = useState<FormValues>({
     id: 0,
     name: '',
@@ -55,8 +60,9 @@ const Form: React.FC = () => {
   };
 
   return (
-    <form className='w-4/12 bg-white px-20 py-14' onSubmit={handleSubmit}>
-      <TextField
+    <form className='w-4/12 bg-white px-20 py-14 relative' onSubmit={handleSubmit}>
+      <p className='flex' >
+        <TextField
         id='name'
         name='name'
         label='Name'
@@ -65,6 +71,11 @@ const Form: React.FC = () => {
         value={values.name}
         onChange={handleChange}
       />
+      <p className='absolute right-4 top-2 text-[30px] cursor-pointer'
+       onClick={onCancel}>
+        <AiOutlineCloseCircle />
+      </p>
+      </p>
       <p className='py-6'>
         <TextField
           id='email'
