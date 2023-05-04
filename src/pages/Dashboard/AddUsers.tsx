@@ -5,7 +5,7 @@ import Form from '../../components/form'
 
 const AddUsers:React.FC = () => {
   
-  const [formModal, setFormModal]= useState(true);
+  const [formModal, setFormModal]= useState(false);
   const popModal = () => {
     setFormModal(!formModal);
   }

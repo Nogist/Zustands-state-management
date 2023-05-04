@@ -5,6 +5,7 @@ import { useUserStore } from '../store/useUserStore';
 import { v4 as uuidv4 } from 'uuid';
 
 interface FormValues {
+  id: number;
   name: string;
   email: string;
   phone: string;
@@ -14,6 +15,7 @@ interface FormValues {
 
 const Form: React.FC = () => {
   const [values, setValues] = useState<FormValues>({
+    id: 0,
     name: '',
     email: '',
     phone: '',
@@ -31,7 +33,7 @@ const Form: React.FC = () => {
     event.preventDefault();
     const { name, email, phone, address, zipcode } = values;
     const newUser = {
-      id: uuidv4(),
+      id: parseInt(uuidv4()),
       name,
       email,
       phone,
@@ -40,8 +42,10 @@ const Form: React.FC = () => {
         zipcode,
       },
     };
+
     addUser(newUser);
     setValues({
+      id: 0,
       name: '',
       email: '',
       phone: '',
