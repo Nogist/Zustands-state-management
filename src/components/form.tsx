@@ -57,6 +57,7 @@ const Form:React.FC<Props> = ({ onCancel }) => {
       address: '',
       zipcode: '',
     });
+    onCancel();
   };
 
   return (

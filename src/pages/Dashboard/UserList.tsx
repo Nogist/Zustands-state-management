@@ -9,6 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { AiOutlineDelete } from 'react-icons/ai';
+import ClockLoader from "react-spinners/ClockLoader";
 
 interface User {
   id: number;
@@ -34,7 +35,13 @@ const UserList: React.FC = () => {
 
   return (
     <>
-      {loading && <p>Loading...</p>}
+      {loading && <div className='abstract w-full h-screen flex items-center justify-center'>
+        <ClockLoader
+          size={45} 
+          color={'#82c8e6'} 
+          loading={loading}
+        />
+        </div>}
       {error && <p>{error}</p>}
       {!loading && !error && (
         <TableContainer component={Paper}>
