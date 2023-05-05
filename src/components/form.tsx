@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useUserStore } from '../store/useUserStore';
-import { v4 as uuidv4 } from 'uuid';
 import {AiOutlineCloseCircle} from 'react-icons/ai';
 
 interface Props {
