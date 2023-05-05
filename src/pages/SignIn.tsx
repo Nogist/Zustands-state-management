@@ -3,6 +3,7 @@ import Modal from '../components/Modal';
 import Banner from '../Assets/Banner.png'
 
 const SignIn: React.FC = () => {
+
   return (
     <div className='h-screen flex flex-row'>
       <Modal 

@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useUserStore } from '../store/useUserStore';
 import { v4 as uuidv4 } from 'uuid';
 import {AiOutlineCloseCircle} from 'react-icons/ai';
 
-
 interface Props {
   onCancel: () => void;
 }
+
 interface FormValues {
   id: number;
   name: string;
@@ -18,7 +18,7 @@ interface FormValues {
   zipcode: string;
 }
 
-const Form:React.FC<Props> = ({ onCancel }) => {
+const Form: React.FC<Props> = ({ onCancel }) => {
   const [values, setValues] = useState<FormValues>({
     id: 0,
     name: '',
@@ -27,7 +27,14 @@ const Form:React.FC<Props> = ({ onCancel }) => {
     address: '',
     zipcode: '',
   });
-  const { addUser } = useUserStore();
+  const [highestId, setHighestId] = useState<number>(0);
+  const { users, addUser } = useUserStore();
+
+  useEffect(() => {
+    // Find the maximum ID of the existing users in the table
+    const maxId = Math.max(...users.map((user) => user.id));
+    setHighestId(maxId);
+  }, [users]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -38,7 +45,7 @@ const Form:React.FC<Props> = ({ onCancel }) => {
     event.preventDefault();
     const { name, email, phone, address, zipcode } = values;
     const newUser = {
-      id: parseInt(uuidv4()),
+      id: highestId + 1,
       name,
       email,
       phone,
@@ -47,7 +54,8 @@ const Form:React.FC<Props> = ({ onCancel }) => {
         zipcode,
       },
     };
-
+    
+    console.log('New User:', newUser);
     addUser(newUser);
     setValues({
       id: 0,
@@ -57,12 +65,13 @@ const Form:React.FC<Props> = ({ onCancel }) => {
       address: '',
       zipcode: '',
     });
+    setHighestId(highestId + 1);
     onCancel();
   };
 
   return (
     <form className='w-4/12 bg-white px-20 py-14 relative' onSubmit={handleSubmit}>
-      <p className='flex' >
+      <div className='flex' >
         <TextField
         id='name'
         name='name'
@@ -76,8 +85,8 @@ const Form:React.FC<Props> = ({ onCancel }) => {
        onClick={onCancel}>
         <AiOutlineCloseCircle />
       </p>
-      </p>
-      <p className='py-6'>
+      </div>
+      <div className='py-6'>
         <TextField
           id='email'
           name='email'
@@ -87,7 +96,7 @@ const Form:React.FC<Props> = ({ onCancel }) => {
           value={values.email}
           onChange={handleChange}
         />
-      </p>
+      </div>
       <TextField
         id='phone'
         name='phone'
@@ -97,7 +106,7 @@ const Form:React.FC<Props> = ({ onCancel }) => {
         value={values.phone}
         onChange={handleChange}
       />
-      <p className='py-6'>
+      <div className='py-6'>
         <TextField
           id='address'
           name='address'
@@ -107,7 +116,7 @@ const Form:React.FC<Props> = ({ onCancel }) => {
           value={values.address}
           onChange={handleChange}
         />
-      </p>
+      </div>
       <TextField
         id='zipcode'
         name='zipcode'
@@ -117,11 +126,11 @@ const Form:React.FC<Props> = ({ onCancel }) => {
         value={values.zipcode}
         onChange={handleChange}
       />
-      <p className='py-6'>
+      <div className='py-6'>
         <Button type='submit' variant='contained' className='w-full'>
           Add user
         </Button>
-      </p>
+      </div>
     </form>
   );
 };

@@ -24,9 +24,7 @@ export const useValidation = create<ValidationState>((set) => ({
   signUp: async (user: User) => {
     try {
       // Perform validation logic here
-      // ...
-
-      // Simulate successful signup
+    
       set({ currentUser: user, isAuthenticated: true, error: null });
     } catch (error) {
       set({ error: 'Failed to sign up' });
@@ -36,9 +34,7 @@ export const useValidation = create<ValidationState>((set) => ({
   signIn: async (email: string, password: string) => {
     try {
       // Perform validation logic here
-      // ...
-
-      // Simulate successful signin
+  
       const user = { id: 1, name: 'John Doe', email: email, password: password };
       set({ currentUser: user, isAuthenticated: true, error: null });
     } catch (error) {
