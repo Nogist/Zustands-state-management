@@ -10,6 +10,7 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import { AiOutlineDelete } from 'react-icons/ai';
 import ClockLoader from "react-spinners/ClockLoader";
+import Pagination from '@mui/material/Pagination';
 
 interface User {
   id: number;
@@ -23,7 +24,8 @@ interface User {
 }
 
 const UserList: React.FC = () => {
-  const { users, loading, error, getUsers, deleteUser } = useUserStore();
+  const { users, currentPage, usersPerPage, loading, error, getUsers, deleteUser, setCurrentPage } = useUserStore();
+  const pageNumbers = Math.ceil(users.length / usersPerPage);
 
   useEffect(() => {
     getUsers();
@@ -31,6 +33,32 @@ const UserList: React.FC = () => {
 
   const handleDelete = (id: number) => {
     deleteUser(id);
+  };
+
+  const displayUsers = users
+    .slice((currentPage - 1) * usersPerPage, currentPage * usersPerPage)
+    .map((user: User, index: number) => (
+      <TableRow key={user.id}>
+        <TableCell>{index + 1 + (currentPage - 1) * usersPerPage}</TableCell>
+        <TableCell>{user.name}</TableCell>
+        <TableCell>{user.email}</TableCell>
+        <TableCell>{user.phone}</TableCell>
+        <TableCell>{user.address.city}</TableCell>
+        <TableCell>{user.address.zipcode}</TableCell>
+        <TableCell>
+          <Button
+            variant="outlined"
+            startIcon={<AiOutlineDelete />}
+            onClick={() => handleDelete(user.id)}
+          >
+            Delete
+          </Button>
+        </TableCell>
+      </TableRow>
+    ));
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setCurrentPage(value);
   };
 
   return (
@@ -41,11 +69,11 @@ const UserList: React.FC = () => {
           color={'#82c8e6'} 
           loading={loading}
         />
-        </div>}
+      </div>}
       {error && <p>{error}</p>}
       {!loading && !error && (
         <TableContainer component={Paper}>
-          <Table aria-label="users table" className="bg-[aqua] text-white !important">
+          <Table aria-label="users table" className="bg-[aqua] flex flex-col text-white !important">
             <TableHead>
               <TableRow>
                 <TableCell>#</TableCell>
@@ -57,28 +85,11 @@ const UserList: React.FC = () => {
                 <TableCell>Action</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {users.map((user: User, index: number) => (
-                <TableRow key={user.id}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.phone}</TableCell>
-                  <TableCell>{user.address.city}</TableCell>
-                  <TableCell>{user.address.zipcode}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="outlined"
-                      startIcon={<AiOutlineDelete />}
-                      onClick={() => handleDelete(user.id)}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+            <TableBody>{displayUsers}</TableBody>
           </Table>
+          <p className='bg-[aqua] w-full flex justify-end py-2'>
+            <Pagination count={pageNumbers} color="primary" onChange={handlePageChange} />
+          </p>
         </TableContainer>
       )}
     </>

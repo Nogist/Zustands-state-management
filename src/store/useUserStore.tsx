@@ -14,15 +14,21 @@ type User = {
 
 type UserState = {
   users: User[];
+  currentPage: number;
+  usersPerPage: number;
   loading: boolean;
   error: string | null;
   getUsers: () => Promise<void>;
   addUser: (user: User) => Promise<void>;
   deleteUser: (id: number) => Promise<void>;
+  setCurrentPage: (page: number) => void;
 };
+
 
 export const useUserStore = create<UserState>((set) => ({
   users: [],
+  currentPage: 1,
+  usersPerPage:5, 
   loading: false,
   error: null,
 
@@ -61,5 +67,9 @@ export const useUserStore = create<UserState>((set) => ({
     } catch (error) {
       set({ loading: false, error: 'Failed to delete user' });
     }
+  },
+
+  setCurrentPage: (page: number) => { // add setCurrentPage here
+    set({ currentPage: page });
   },
 }));
