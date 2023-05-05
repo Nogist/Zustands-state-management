@@ -73,21 +73,21 @@ const UserList: React.FC = () => {
       {error && <p>{error}</p>}
       {!loading && !error && (
         <TableContainer component={Paper}>
-          <Table aria-label="users table" className="bg-[aqua] flex flex-col text-white !important">
+          <Table aria-label="users table" className="flex flex-col text-white !important">
             <TableHead>
-              <TableRow>
-                <TableCell>#</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell >Email</TableCell>
-                <TableCell>Phone</TableCell>
-                <TableCell>Address</TableCell>
-                <TableCell>Zipcode</TableCell>
-                <TableCell>Action</TableCell>
+              <TableRow  className='bg-black bg-opacity-80' >
+                <TableCell style={{color:'white'}}>#</TableCell>
+                <TableCell style={{color:'white'}}>Name</TableCell>
+                <TableCell style={{color:'white'}} >Email</TableCell>
+                <TableCell style={{color:'white'}}>Phone</TableCell>
+                <TableCell style={{color:'white'}}>Address</TableCell>
+                <TableCell style={{color:'white'}}>Zipcode</TableCell>
+                <TableCell style={{color:'white'}}>Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>{displayUsers}</TableBody>
           </Table>
-          <p className='bg-[aqua] w-full flex justify-end py-2'>
+          <p className='w-full flex justify-end py-2'>
             <Pagination count={pageNumbers} color="primary" onChange={handlePageChange} />
           </p>
         </TableContainer>
